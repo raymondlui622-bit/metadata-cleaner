@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- connect-src 'none': the page cannot send network requests at all, so files cannot be uploaded. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; worker-src 'self'; manifest-src 'self'">
+  <meta name="referrer" content="no-referrer">
+  <title>Metadata Cleaner</title>
+  <meta name="description" content="Remove hidden information from photos and PDFs before sharing. Works offline, on your device.">
+  <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Cleaner">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <main>
+    <header class="top">
+      <img class="logo" src="icons/icon-192.png" alt="" width="56" height="56">
+      <h1>Metadata Cleaner</h1>
+      <p class="subtitle">Remove hidden information before sharing.</p>
+      <p class="privacy">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1zm2 0h6V7a3 3 0 0 0-6 0v3z"/></svg>
+        Files never leave this device.
+      </p>
+    </header>
+
+    <section id="drop" class="drop" aria-label="Choose files">
+      <label for="file" class="btn primary big"><span class="step">1</span> Select Files</label>
+      <input id="file" type="file" multiple accept="image/jpeg,image/png,image/heic,image/heif,.jpg,.jpeg,.png,.heic,.heif,application/pdf,.pdf">
+      <p class="hint">From Photos, the Files app, or drag &amp; drop here.<br>JPG · PNG · HEIC · PDF</p>
+    </section>
+
+    <section id="options" class="panel" hidden>
+      <div id="pdf-options" hidden>
+        <p class="panel-title">For PDFs, also remove:</p>
+        <label class="check"><input type="checkbox" id="opt-annotations"> Comments &amp; annotations</label>
+        <label class="check"><input type="checkbox" id="opt-attachments"> Attached files</label>
+        <label class="check"><input type="checkbox" id="opt-scripts"> Scripts (JavaScript)</label>
+        <p class="fine">These are part of the document's content, so they are only removed if you tick them.</p>
+      </div>
+      <label class="check"><input type="checkbox" id="opt-generic"> Use generic file names (e.g. image_1_clean.jpg)</label>
+      <p class="fine">File names can reveal things too — for example "ChatGPT Image…".</p>
+    </section>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <section id="list" class="list" aria-label="Selected files"></section>
+
+    <div id="actions" class="actions" hidden>
+      <button id="clean" class="btn primary"><span class="step">2</span> Remove Metadata</button>
+      <div class="row">
+        <button id="save-all" class="btn" disabled><span class="step">3</span> Save All</button>
+        <button id="zip" class="btn" disabled>Download ZIP</button>
+      </div>
+    </div>
+    <p class="center"><button id="clear" class="btn ghost" hidden>Clear all</button></p>
+
+    <footer>
+      <details>
+        <summary>Add to your iPhone Home Screen</summary>
+        <ol>
+          <li>Open this page in <strong>Safari</strong>.</li>
+          <li>Tap the <strong>Share</strong> button (square with an arrow).</li>
+          <li>Scroll down and tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li>
+          <li>Open it from the Home Screen icon. After the first visit it works without internet.</li>
+        </ol>
+      </details>
+      <details>
+        <summary>Tips for iPhone photos</summary>
+        <ul>
+          <li>Picking from <strong>Photos</strong> may give the app a converted JPG copy, and iOS may already strip location. To clean the original HEIC exactly as stored, first save it to Files ("Save to Files"), then pick it with <strong>Choose File</strong>.</li>
+          <li>To save a cleaned photo back to Photos, tap <strong>Save / Share</strong> and choose <strong>Save Image</strong>.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>What this app cannot remove</summary>
+        <ul>
+          <li>Anything visible in the image or on the page (text, faces, signs, screen contents).</li>
+          <li>Invisible watermarks woven into the pixels themselves (e.g. Google SynthID). No metadata tool can remove those.</li>
+          <li>In PDFs: hidden text, layers, form data, or content covered by shapes. This app cleans PDF metadata; it is not a full document sanitizer.</li>
+          <li>Unsupported formats (GIF, WebP, TIFF, RAW, video, Word). These are refused rather than partly cleaned.</li>
+        </ul>
+      </details>
+      <p class="fine">No uploads · No tracking · No accounts · Works offline</p>
+    </footer>
+  </main>
+</body>
+</html>
